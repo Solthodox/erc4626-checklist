@@ -86,27 +86,49 @@ _Created by [@solthodox](https://twitter.com/solthodox) and [@MaslarovK](https:/
 
 
 ## Math
+- `M1`- Are all the roundings done in favor of the protocol to prevent any rounding vulnerability?
+- `M2`- Are the multiplications done before the divisions?
+- `M3`- Is the contract using a math library to make sure big operations don't overflow? 
+- `M4` - Can any value be maliciously inflated by sending assets to the vault? 
+- `M5`- If there is any entry or exit fee, is the inverse of the fee properly calculated when converting from assets to assets or vice versa?
+- `M6`- If there is any decimal scalation, is it correctly done?
+- `M7`- Can the vault properly handle the cases where there are zero shares, assets or even both?
 
 ## External calls
+- `E1`- Does the vault properly handle reverting calls to external dependencies?
+- `E2`- Is the vault susceptible to suffering a gas grieffing due to this external calls?
+- `E3`- Does the vault dangerously set a fixed gas limit when doing external calls?
+- `E4`- If performing raw calls, does the contract check for the `success` return value? 
 
 ## Share price
-
+- `SP1`- Are `totalAssets` pesimistically accounted?
+- `SP2`- Does the share price relay too much on external dependencies?  
+- `SP3`- Can the share price be manipulated by either vault users or vault's external dependencies?
+- `SP4`- Is the vault share price inflation attack safe?
+- `SP5`- If there is any profit lock mechanism, is it reflected in the share price?
 
 ## Inheritance
-- `IC1`- If the contracts inherits from `ERC4626.sol`, does it override all the needed functions from the contract for the vault to work properly?
+- `IC1`- If the contracts inherits from `ERC4626.sol` and modifies some logic from the original implementation, does it override all of the needed functions from the inheriting for the vault to work properly?
 - `IC2`- Is there any storage collision due to the inheritance?
 
 
 ## Tokens
+- `T1`- If the vault is intended to use any token, does it properly work with fee-on-transfer or rebase tokens?
+- `T2`- Can some malicious token reenter the vault? 
+- `T2`- Can the contract be DoSed because an approval race conditon in the underlyig token?
+- `T2`- If the vault is intended to use any token, does it use a safe transfers libary such as `OZ::SafeERC20` to safely interact with those that dont have a return value or other cases?
 
+## Permissions and Access Control
+- `P1`- Are there any constraints when it comes to fees or other values that can be set by a trusted role?
+- `P2`- Can a trusted role steal funds from the vault?
+- `P3` - Will users' funds be locked if the vault is paused/shutdown?
+- `P4` - Do functions have a solid input validation?
 
-## Harvest logic
-
-
-## Permissions and access control
-
-
-## Security patterns
-
-
+## General Security Practices
+- `G1`- Does the contract try to keep the logic simple?
+- `G2`- Does the contract implement battle-tested code?
+- `G3`- Does the contract use a safe solidity `pragma`?
+- `G4`- Do tests have a high(>=90%) code coverage?
+- `G5`- If implenmenting external protocols, did the doing following the recommendations in the documentation?
+- `G6`- Does the test suite have fuzz-tests as well?
 
